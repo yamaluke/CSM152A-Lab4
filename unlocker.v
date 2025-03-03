@@ -2,6 +2,12 @@ module unlocker(
     input wire clk, 
     input wire locker, 
 
+    input btn1,
+    input btn2,
+    input btn3,
+    input btn4,
+    input btn5,
+
     input wire [3:0] inputCount,
     
 
@@ -20,8 +26,11 @@ module unlocker(
 
     reg [7:0][19:0] userList;
     reg [7:0][19:0] userPassword;
+    reg [7:0][1:0] userMode;
     reg[19:0] tempUser;
     reg[19:0] tempPassword;
+    
+    integer currentUser;
 
     integer i;
 
@@ -34,7 +43,40 @@ module unlocker(
 
     always @(posedge clk) 
     begin
-        if(inputCount == 8)
+        if(~lock)
+        begin
+            if(locker || btn1)
+            begin
+                if(userMode[currentUser][1:0] == 2'b10)
+                begin
+                    // remove current user 
+                end
+                lock = 1;
+            end
+            else if(userMode[currentUser][1:0] == 2'b00 || userMode[currentUser][1:0] == 2'b01)
+            begin
+                if(btn2)
+                begin
+                    // reset password
+                end
+                else if(userMode[currentUser][1:0] == 2'b00)
+                begin
+                    if(btn3)
+                    begin
+                        // add user 
+                    end
+                    else if(btn4)
+                    begin
+                        // change password
+                    end
+                    else if(btn3)
+                    begin
+                        // delete password 
+                    end
+                end
+            end
+        end
+        else if(inputCount == 8)
         begin
             for(i=0; i<8; i=i+1)
             begin
@@ -44,15 +86,13 @@ module unlocker(
                 begin
                     if(tempPassword[4:0] == passwordInput0 && tempPassword[9:5] == passwordInput1 && tempPassword[14:10] == passwordInput2 && tempPassword[19:15] == passwordInput3)
                     begin
-                            lock = 0;
+                        currentUser = i;
+                        lock = 0;
                     end
                 end
             end
         end
-        if(locker)
-        begin
-            lock = 1;
-        end
+        
     end
 
 
