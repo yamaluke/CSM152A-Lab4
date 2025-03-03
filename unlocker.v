@@ -1,14 +1,14 @@
 module unlocker(
-    input wire locker, //feed 2hz
-    input wire rst,
-    input wire pause,
-    input wire sel,
-    input wire adj,
+    input wire clk, 
+    input wire locker, 
+
+    input wire [3:0] inputCount,
+    
 
     input wire [4:0] userNameInput0,
     input wire [4:0] userNameInput1,
     input wire [4:0] userNameInput2,
-    input wire [4:0] userNameInpue3,
+    input wire [4:0] userNameInput3,
 
     input wire[4:0] passwordInput0,
     input wire[4:0] passwordInput1,
@@ -18,20 +18,40 @@ module unlocker(
     output reg lock
     );
 
-    reg [19:0][7:0] userList;
-    reg [19:0][7:0] userPassword;
+    reg [7:0][19:0] userList;
+    reg [7:0][19:0] userPassword;
     reg[19:0] tempUser;
+    reg[19:0] tempPassword;
+
     integer i;
+
+    initial 
+    begin
+        userList[0][19:0] = 20'b00000000000000000000;
+        userPassword[0][19:0] = 20'b00000000000000000000;
+        lock = 1;
+    end
 
     always @(posedge clk) 
     begin
-        for(i=0; i<8; i=i+1)
+        if(inputCount == 8)
         begin
-            tempUser = userList[19:0][i];
-            if(tempUser[4:0] == userNameInput0 && tempUser[9:5] == userNameInput1 && tempUser[14:10] == userNameInput2 && tempUser[19:15] == userNameInpue3)
+            for(i=0; i<8; i=i+1)
             begin
-                
+                tempUser = userList[0][19:0];
+                tempPassword = userPassword[0][19:0];
+                if(tempUser[4:0] == userNameInput0 && tempUser[9:5] == userNameInput1 && tempUser[14:10] == userNameInput2 && tempUser[19:15] == userNameInput3)
+                begin
+                    if(tempPassword[4:0] == passwordInput0 && tempPassword[9:5] == passwordInput1 && tempPassword[14:10] == passwordInput2 && tempPassword[19:15] == passwordInput3)
+                    begin
+                            lock = 0;
+                    end
+                end
             end
+        end
+        if(locker)
+        begin
+            lock = 1;
         end
     end
 
