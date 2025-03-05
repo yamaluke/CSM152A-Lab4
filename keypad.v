@@ -1,9 +1,12 @@
 module Keypad_Scanner (
     input wire clk,              // Clock input
     input wire reset,            // Reset input
-    input wire [3:0] row_raw,    // Raw row inputs from the keypad
+    input wire [3:0] row,    // Raw row inputs from the keypad
     output reg [3:0] col,        // Column outputs to the keypad
-    output reg [4:0] key         // Output which key is pressed (5-bit register)
+    output reg [3:0] key1,       // Output for first key press
+    output reg [3:0] key2,       // Output for second key press
+    output reg [3:0] key3,       // Output for third key press
+    output reg [3:0] key4        // Output for fourth key press
 );
 
     // Wire to hold the debounced row signals
@@ -13,28 +16,28 @@ module Keypad_Scanner (
     Keypad_Debouncer debounce0 (
         .clk(clk),
         .reset(reset),
-        .key_raw(row_raw[0]),
+        .key_raw(row[0]),
         .key_debounced(row_debounced[0])
     );
 
     Keypad_Debouncer debounce1 (
         .clk(clk),
         .reset(reset),
-        .key_raw(row_raw[1]),
+        .key_raw(row[1]),
         .key_debounced(row_debounced[1])
     );
 
     Keypad_Debouncer debounce2 (
         .clk(clk),
         .reset(reset),
-        .key_raw(row_raw[2]),
+        .key_raw(row[2]),
         .key_debounced(row_debounced[2])
     );
 
     Keypad_Debouncer debounce3 (
         .clk(clk),
         .reset(reset),
-        .key_raw(row_raw[3]),
+        .key_raw(row[3]),
         .key_debounced(row_debounced[3])
     );
 
@@ -74,23 +77,54 @@ module Keypad_Scanner (
     // Output key detection based on the debounced rows
     always @(posedge clk) begin
         case (current_state)
-            2'b00: key = (row_debounced[0]) ? 5'b00001 : 5'b00000; // Key 1 if debounced row 0 is pressed
-            2'b01: key = (row_debounced[1]) ? 5'b00010 : 5'b00000; // Key 2 if debounced row 1 is pressed
-            2'b10: key = (row_debounced[2]) ? 5'b00100 : 5'b00000; // Key 3 if debounced row 2 is pressed
-            2'b11: key = (row_debounced[3]) ? 5'b01000 : 5'b00000; // Key 4 if debounced row 3 is pressed
-            default: key = 5'b00000;
+            2'b00: key1 = (row_debounced[0]) ? 4'b0001 : 4'b0000; // Key 1 if debounced row 0 is pressed
+            2'b01: key2 = (row_debounced[1]) ? 4'b0010 : 4'b0000; // Key 2 if debounced row 1 is pressed
+            2'b10: key3 = (row_debounced[2]) ? 4'b0100 : 4'b0000; // Key 3 if debounced row 2 is pressed
+            2'b11: key4 = (row_debounced[3]) ? 4'b1000 : 4'b0000; // Key 4 if debounced row 3 is pressed
+            default: begin
+                key1 = 4'b0000;
+                key2 = 4'b0000;
+                key3 = 4'b0000;
+                key4 = 4'b0000;
+            end
         endcase
     end
 
-    // Store the key input into a 5-bit register
-    reg [4:0] stored_key;
+    // Storing logic for each key
+    reg [3:0] stored_key1, stored_key2, stored_key3, stored_key4;
+    reg [1:0] key_index;
 
     always @(posedge clk or posedge reset) begin
         if (reset) begin
-            stored_key <= 5'b00000; // Clear stored key on reset
-        end else if (key != 5'b00000) begin
-            stored_key <= key; // Store the key if a key is pressed
+            stored_key1 <= 4'b0000;
+            stored_key2 <= 4'b0000;
+            stored_key3 <= 4'b0000;
+            stored_key4 <= 4'b0000;
+            key_index <= 2'b00; // Reset to start storing from key1
+        end else begin
+            // Logic to store the keys in different outputs
+            if (key_index == 2'b00 && key1 != 4'b0000) begin
+                stored_key1 <= key1;
+                key_index <= key_index + 1;
+            end else if (key_index == 2'b01 && key2 != 4'b0000) begin
+                stored_key2 <= key2;
+                key_index <= key_index + 1;
+            end else if (key_index == 2'b10 && key3 != 4'b0000) begin
+                stored_key3 <= key3;
+                key_index <= key_index + 1;
+            end else if (key_index == 2'b11 && key4 != 4'b0000) begin
+                stored_key4 <= key4;
+                key_index <= key_index + 1;
+            end
         end
+    end
+
+    // Assign final outputs (stored keys)
+    always @(posedge clk) begin
+        key1 = stored_key1;
+        key2 = stored_key2;
+        key3 = stored_key3;
+        key4 = stored_key4;
     end
 
 endmodule
