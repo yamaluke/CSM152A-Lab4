@@ -3,7 +3,7 @@ module Keypad_Scanner (
     input wire reset,            // Reset input
     input wire [3:0] row_raw,    // Raw row inputs from the keypad
     output reg [3:0] col,        // Column outputs to the keypad
-    output reg [3:0] key         // Output which key is pressed
+    output reg [4:0] key         // Output which key is pressed (5-bit register)
 );
 
     // Wire to hold the debounced row signals
@@ -74,12 +74,23 @@ module Keypad_Scanner (
     // Output key detection based on the debounced rows
     always @(posedge clk) begin
         case (current_state)
-            2'b00: key = (row_debounced[0]) ? 4'b0001 : 4'b0000; // Key 1 if debounced row 0 is pressed
-            2'b01: key = (row_debounced[1]) ? 4'b0010 : 4'b0000; // Key 2 if debounced row 1 is pressed
-            2'b10: key = (row_debounced[2]) ? 4'b0100 : 4'b0000; // Key 3 if debounced row 2 is pressed
-            2'b11: key = (row_debounced[3]) ? 4'b1000 : 4'b0000; // Key 4 if debounced row 3 is pressed
-            default: key = 4'b0000;
+            2'b00: key = (row_debounced[0]) ? 5'b00001 : 5'b00000; // Key 1 if debounced row 0 is pressed
+            2'b01: key = (row_debounced[1]) ? 5'b00010 : 5'b00000; // Key 2 if debounced row 1 is pressed
+            2'b10: key = (row_debounced[2]) ? 5'b00100 : 5'b00000; // Key 3 if debounced row 2 is pressed
+            2'b11: key = (row_debounced[3]) ? 5'b01000 : 5'b00000; // Key 4 if debounced row 3 is pressed
+            default: key = 5'b00000;
         endcase
+    end
+
+    // Store the key input into a 5-bit register
+    reg [4:0] stored_key;
+
+    always @(posedge clk or posedge reset) begin
+        if (reset) begin
+            stored_key <= 5'b00000; // Clear stored key on reset
+        end else if (key != 5'b00000) begin
+            stored_key <= key; // Store the key if a key is pressed
+        end
     end
 
 endmodule
