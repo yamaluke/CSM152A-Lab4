@@ -2,11 +2,11 @@ module unlocker(
     input wire clk, 
     input wire locker, 
 
-    input btn1,
-    input btn2,
-    input btn3,
-    input btn4,
-    input btn5,
+    input wire btn1,
+    input wire btn2,
+    input wire btn3,
+    input wire btn4,
+    input wire btn5,
 
     input wire [3:0] inputCount,
     
@@ -21,14 +21,18 @@ module unlocker(
     input wire[4:0] passwordInput2,
     input wire[4:0] passwordInput3,
 
-    output reg lock
+    output reg lock,
+    output reg resetCount
     );
 
-    reg [7:0][19:0] userList;
-    reg [7:0][19:0] userPassword;
-    reg [7:0][1:0] userMode;
+    reg [19:0] userList [7:0];    // Array of 8 elements, each 20 bits wide
+    reg [19:0] userPassword [7:0]; // Array of 8 elements, each 20 bits wide
+    reg [1:0] userMode [7:0];      // Array of 8 elements, each 2 bits wide
+
     reg[19:0] tempUser;
     reg[19:0] tempPassword;
+
+    integer userCount;
     
     integer currentUser;
 
@@ -36,8 +40,11 @@ module unlocker(
 
     initial 
     begin
-        userList[0][19:0] = 20'b00000000000000000000;
-        userPassword[0][19:0] = 20'b00000000000000000000;
+        userList[0] = 20'b00001000010000000000;
+        userPassword[0] = 20'b00001000010000000000;
+        userMode[0] = 0;
+        currentUser = 0;
+        userCount = 1;
         lock = 1;
     end
 
@@ -52,26 +59,41 @@ module unlocker(
                     // remove current user 
                 end
                 lock = 1;
+                resetCount = 0;
             end
             else if(userMode[currentUser][1:0] == 2'b00 || userMode[currentUser][1:0] == 2'b01)
             begin
                 if(btn2)
                 begin
                     // reset password
+                    resetCount = 0;
+                    if(inputCount == 4)
+                    begin
+                        userPassword[currentUser] = userNameInput3[4:0] & userNameInput2[4:0] & userNameInput1[4:0] & userNameInput0[4:0];
+                        resetCount = 1;
+                    end
+                    
+                    
                 end
                 else if(userMode[currentUser][1:0] == 2'b00)
                 begin
                     if(btn3)
                     begin
                         // add user 
+                        resetCount = 0;
+                        if(inputCount == 8)
+                        begin
+                            userPassword[currentUser] = userNameInput3[4:0] & userNameInput2[4:0] & userNameInput1[4:0] & userNameInput0[4:0];
+                            resetCount = 1;
+                        end
                     end
                     else if(btn4)
                     begin
                         // change password
                     end
-                    else if(btn3)
+                    else if(btn5)
                     begin
-                        // delete password 
+                        // delete user 
                     end
                 end
             end
@@ -88,6 +110,7 @@ module unlocker(
                     begin
                         currentUser = i;
                         lock = 0;
+                        resetCount = 1;
                     end
                 end
             end
