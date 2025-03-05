@@ -1,7 +1,7 @@
 `timescale 10ns / 1ns
 
 module display(
-    input wire clkDis,
+    input wire clk1KHz,
     input wire [4:0] digit1,  // Digit 1 input (e.g., m10)
     input wire [4:0] digit2,  // Digit 2 input (e.g., m1)
     input wire [4:0] digit3,  // Digit 3 input (e.g., s10)
@@ -13,7 +13,7 @@ module display(
     reg [1:0] digit_select;   // For digit multiplexing (0: m10, 1: m1, 2: s10, 3: s1)
 
     // Multiplexing 7-segment decoder
-    always @(posedge clkDis) begin
+    always @(posedge clk1KHz) begin
         case (digit_select)
             2'b00: begin
                 // Display minutes tens digit (m10)
