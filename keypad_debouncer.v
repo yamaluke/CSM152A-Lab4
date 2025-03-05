@@ -1,5 +1,7 @@
+`timescale 10ns / 1ns
+
 module Keypad_Debouncer (
-    input wire clk,           // Clock input
+    input wire clk1KHz,           // Clock input
     input wire reset,         // Reset input
     input wire key_raw,       // Raw input from the keypad (key pressed or not)
     output reg key_debounced  // Debounced key output (valid key press)
@@ -9,7 +11,7 @@ module Keypad_Debouncer (
     reg [1:0] key_state;
 
     // Debounce logic using 2-bit register
-    always @(posedge clk or posedge reset) begin
+    always @(posedge clk1KHz or posedge reset) begin
         if (reset) begin
             key_state <= 2'b00;    // Initialize state to no key press
             key_debounced <= 0;    // No key press initially

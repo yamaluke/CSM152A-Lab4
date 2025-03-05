@@ -1,5 +1,7 @@
-module Keypad_Scanner (
-    input wire clk,              // Clock input
+`timescale 10ns / 1ns
+
+module Keypad (
+    input wire clk1KHz,              // Clock input
     input wire reset,            // Reset input
     input wire [3:0] row,    // Raw row inputs from the keypad
     output reg [3:0] col,        // Column outputs to the keypad
@@ -44,7 +46,7 @@ module Keypad_Scanner (
     // State machine or scanning logic to handle keypad inputs
     reg [1:0] current_state, next_state;
 
-    always @(posedge clk or posedge reset) begin
+    always @(posedge clk1KHz or posedge reset) begin
         if (reset)
             current_state <= 2'b00;
         else
@@ -75,7 +77,7 @@ module Keypad_Scanner (
     end
 
     // Output key detection based on the debounced rows
-    always @(posedge clk) begin
+    always @(posedge clk1KHz) begin
         case (current_state)
             2'b00: key1 = (row_debounced[0]) ? 4'b0001 : 4'b0000; // Key 1 if debounced row 0 is pressed
             2'b01: key2 = (row_debounced[1]) ? 4'b0010 : 4'b0000; // Key 2 if debounced row 1 is pressed
@@ -94,7 +96,7 @@ module Keypad_Scanner (
     reg [3:0] stored_key1, stored_key2, stored_key3, stored_key4;
     reg [1:0] key_index;
 
-    always @(posedge clk or posedge reset) begin
+    always @(posedge clk1KHz or posedge reset) begin
         if (reset) begin
             stored_key1 <= 4'b0000;
             stored_key2 <= 4'b0000;
@@ -120,7 +122,7 @@ module Keypad_Scanner (
     end
 
     // Assign final outputs (stored keys)
-    always @(posedge clk) begin
+    always @(posedge clk1KHz) begin
         key1 = stored_key1;
         key2 = stored_key2;
         key3 = stored_key3;
