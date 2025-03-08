@@ -12,15 +12,15 @@ module unlocker_tb;
 
     reg [3:0] inputCount;
 
-    reg [4:0] userNameInput0;
-    reg [4:0] userNameInput1;
-    reg [4:0] userNameInput2;
-    reg [4:0] userNameInput3;
+    reg [3:0] userNameInput0;
+    reg [3:0] userNameInput1;
+    reg [3:0] userNameInput2;
+    reg [3:0] userNameInput3;
 
-    reg[4:0] passwordInput0;
-    reg[4:0] passwordInput1;
-    reg[4:0] passwordInput2;
-    reg[4:0] passwordInput3;
+    reg[3:0] passwordInput0;
+    reg[3:0] passwordInput1;
+    reg[3:0] passwordInput2;
+    reg[3:0] passwordInput3;
 
     reg flagResolve;
 

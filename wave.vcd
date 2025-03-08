@@ -1,5 +1,5 @@
 $date
-	Fri Mar  7 17:13:11 2025
+	Fri Mar  7 17:24:25 2025
 $end
 $version
 	Icarus Verilog
@@ -21,15 +21,15 @@ $var reg 1 * clk $end
 $var reg 1 + flagResolve $end
 $var reg 4 , inputCount [3:0] $end
 $var reg 1 - locker $end
-$var reg 5 . passwordInput0 [4:0] $end
-$var reg 5 / passwordInput1 [4:0] $end
-$var reg 5 0 passwordInput2 [4:0] $end
-$var reg 5 1 passwordInput3 [4:0] $end
+$var reg 4 . passwordInput0 [3:0] $end
+$var reg 4 / passwordInput1 [3:0] $end
+$var reg 4 0 passwordInput2 [3:0] $end
+$var reg 4 1 passwordInput3 [3:0] $end
 $var reg 1 2 switch1 $end
-$var reg 5 3 userNameInput0 [4:0] $end
-$var reg 5 4 userNameInput1 [4:0] $end
-$var reg 5 5 userNameInput2 [4:0] $end
-$var reg 5 6 userNameInput3 [4:0] $end
+$var reg 4 3 userNameInput0 [3:0] $end
+$var reg 4 4 userNameInput1 [3:0] $end
+$var reg 4 5 userNameInput2 [3:0] $end
+$var reg 4 6 userNameInput3 [3:0] $end
 $scope module my_unlock $end
 $var wire 1 $ btn1 $end
 $var wire 1 % btn2 $end
@@ -40,20 +40,20 @@ $var wire 1 * clk $end
 $var wire 1 + flagResolve $end
 $var wire 4 7 inputCount [3:0] $end
 $var wire 1 - locker $end
-$var wire 5 8 passwordInput0 [4:0] $end
-$var wire 5 9 passwordInput1 [4:0] $end
-$var wire 5 : passwordInput2 [4:0] $end
-$var wire 5 ; passwordInput3 [4:0] $end
+$var wire 4 8 passwordInput0 [3:0] $end
+$var wire 4 9 passwordInput1 [3:0] $end
+$var wire 4 : passwordInput2 [3:0] $end
+$var wire 4 ; passwordInput3 [3:0] $end
 $var wire 1 2 switch1 $end
-$var wire 5 < userNameInput0 [4:0] $end
-$var wire 5 = userNameInput1 [4:0] $end
-$var wire 5 > userNameInput2 [4:0] $end
-$var wire 5 ? userNameInput3 [4:0] $end
+$var wire 4 < userNameInput0 [3:0] $end
+$var wire 4 = userNameInput1 [3:0] $end
+$var wire 4 > userNameInput2 [3:0] $end
+$var wire 4 ? userNameInput3 [3:0] $end
 $var reg 1 # flag $end
 $var reg 1 " lock $end
 $var reg 1 ! resetCount $end
-$var reg 20 @ tempPassword [19:0] $end
-$var reg 20 A tempUser [19:0] $end
+$var reg 16 @ tempPassword [15:0] $end
+$var reg 16 A tempUser [15:0] $end
 $var integer 32 B currentUser [31:0] $end
 $var integer 32 C i [31:0] $end
 $var integer 32 D userCount [31:0] $end
@@ -165,8 +165,8 @@ b1 0
 b1 :
 #17
 1#
-b1000010000000000 @
-b1000010000000000 A
+b1000100000000 @
+b1000100000000 A
 b1 C
 1*
 b1000 ,
@@ -610,7 +610,7 @@ b111 7
 b1000 ,
 b1000 7
 #183
-b1000010000000010 @
+b1000100000010 @
 b1 C
 1*
 #184
@@ -896,8 +896,8 @@ b111 7
 1!
 0"
 b11 B
-b1000010011100010 @
-b100000110001000001 A
+b1000101110010 @
+b100001100100001 A
 b100 C
 1*
 b1000 ,
@@ -985,8 +985,8 @@ b1000 7
 1!
 0"
 b0 B
-b1000010011100010 @
-b100000110001000001 A
+b1000101110010 @
+b100001100100001 A
 b100 C
 1*
 #304
@@ -1068,8 +1068,8 @@ b111 7
 b1001 0
 b1001 :
 #329
-b1000010011100010 @
-b100000110001000001 A
+b1000101110010 @
+b100001100100001 A
 b100 C
 1!
 1*
@@ -1078,16 +1078,16 @@ b1000 7
 #330
 0*
 #331
-b1010010011100010 @
-b100000110001000001 A
+b1100101110010 @
+b100001100100001 A
 b100 C
 1!
 1*
 #332
 0*
 #333
-b1010010011100010 @
-b100000110001000001 A
+b1100101110010 @
+b100001100100001 A
 b100 C
 1!
 1*
@@ -1155,71 +1155,71 @@ b1 :
 b1000 ,
 b1000 7
 #353
-b1010010011100010 @
-b100000110001000001 A
+b1100101110010 @
+b100001100100001 A
 b100 C
 1*
 #354
 0*
 #355
-b1010010011100010 @
-b100000110001000001 A
+b1100101110010 @
+b100001100100001 A
 b100 C
 1*
 #356
 0*
 #357
-b1010010011100010 @
-b100000110001000001 A
+b1100101110010 @
+b100001100100001 A
 b100 C
 1*
 #358
 0*
 #359
-b1010010011100010 @
-b100000110001000001 A
+b1100101110010 @
+b100001100100001 A
 b100 C
 1*
 #360
 0*
 #361
-b1010010011100010 @
-b100000110001000001 A
+b1100101110010 @
+b100001100100001 A
 b100 C
 1*
 #362
 0*
 #363
-b1010010011100010 @
-b100000110001000001 A
+b1100101110010 @
+b100001100100001 A
 b100 C
 1*
 #364
 0*
 #365
-b1010010011100010 @
-b100000110001000001 A
+b1100101110010 @
+b100001100100001 A
 b100 C
 1*
 #366
 0*
 #367
-b1010010011100010 @
-b100000110001000001 A
+b1100101110010 @
+b100001100100001 A
 b100 C
 1*
 #368
 0*
 #369
-b1010010011100010 @
-b100000110001000001 A
+b1100101110010 @
+b100001100100001 A
 b100 C
 1*
 #370
 0*
 #371
-b1010010011100010 @
-b100000110001000001 A
+b1100101110010 @
+b100001100100001 A
 b100 C
 1*
 #372
@@ -1256,8 +1256,8 @@ b1001 :
 1!
 0"
 b11 B
-b1010010011100010 @
-b100000110001000001 A
+b1100101110010 @
+b100001100100001 A
 b100 C
 1*
 b1000 ,
@@ -1347,8 +1347,8 @@ b1000 7
 1!
 0"
 b0 B
-b1010010011100010 @
-b100000110001000001 A
+b1100101110010 @
+b100001100100001 A
 b100 C
 1*
 #404
@@ -1419,8 +1419,8 @@ b100 6
 b100 ?
 #427
 b10 D
-b1010010011100010 @
-b100000110001000001 A
+b1100101110010 @
+b100001100100001 A
 b11 C
 1!
 1*
@@ -1428,8 +1428,8 @@ b11 C
 0*
 #429
 b1 D
-b1010010011100010 @
-b100000110001000001 A
+b1100101110010 @
+b100001100100001 A
 b10 C
 1!
 1*
@@ -1547,15 +1547,15 @@ b1001 :
 b1000 ,
 b1000 7
 #459
-b1000010011100010 @
-b100000110010100001 A
+b1000101110010 @
+b100001101010001 A
 b10 C
 1*
 #460
 0*
 #461
-b1000010011100010 @
-b100000110010100001 A
+b1000101110010 @
+b100001101010001 A
 b10 C
 1*
 #462
@@ -1600,8 +1600,8 @@ b1000 7
 1!
 0"
 b1 B
-b1000010011100010 @
-b100000110010100001 A
+b1000101110010 @
+b100001101010001 A
 b10 C
 1*
 #472
@@ -1676,8 +1676,8 @@ b110 7
 b111 ,
 b111 7
 #497
-b1000010000000010 @
-b1000010000000000 A
+b1000100000010 @
+b1000100000000 A
 b1 C
 1*
 b1000 ,
