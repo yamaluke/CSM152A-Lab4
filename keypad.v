@@ -16,28 +16,28 @@ module Keypad (
 
     // Instantiate the debouncer for each row (row_raw are the raw inputs from keypad)
     Keypad_Debouncer debounce0 (
-        .clk(clk),
+        .clk1KHz(clk1KHz),
         .reset(reset),
         .key_raw(row[0]),
         .key_debounced(row_debounced[0])
     );
 
     Keypad_Debouncer debounce1 (
-        .clk(clk),
+        .clk1KHz(clk1KHz),
         .reset(reset),
         .key_raw(row[1]),
         .key_debounced(row_debounced[1])
     );
 
     Keypad_Debouncer debounce2 (
-        .clk(clk),
+        .clk1KHz(clk1KHz),
         .reset(reset),
         .key_raw(row[2]),
         .key_debounced(row_debounced[2])
     );
 
     Keypad_Debouncer debounce3 (
-        .clk(clk),
+        .clk1KHz(clk1KHz),
         .reset(reset),
         .key_raw(row[3]),
         .key_debounced(row_debounced[3])

@@ -4,9 +4,9 @@ module Top(
     input wire clk,           // Main clock input (e.g., 50 MHz or other)
     input wire reset,         // Reset input
     input wire [3:0] row,     // Row inputs from the keypad
-    output wire [3:0] col,    // Column outputs to the keypad
-    output wire [6:0] seg,    // 7-segment display output
-    output wire [3:0] an      // 4-digit anode control output (for multiplexing)
+    input wire [3:0] col,    // Column inputs to the keypad
+    output reg [6:0] seg,    // 7-segment display output
+    output reg [3:0] an      // 4-digit anode control output (for multiplexing)
 );
 
     // Internal wires for the key outputs
