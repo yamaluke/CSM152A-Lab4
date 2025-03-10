@@ -1,12 +1,12 @@
 `timescale 10ns / 1ns
 
 module Top(
-    input wire clk,           // Main clock input (e.g., 50 MHz or other)
-    input wire reset,         // Reset input
-    input wire [3:0] row,     // Row inputs from the keypad
-    output wire [3:0] col,    // Column outputs to the keypad
-    output reg [6:0] seg,    // 7-segment display output
-    output reg [3:0] an      // 4-digit anode control output (for multiplexing)
+    input clk,           // Main clock input (e.g., 50 MHz or other)
+    input reset,         // Reset input
+    input [3:0] row,     // Row inputs from the keypad
+    output [3:0] col,    // Column outputs to the keypad
+    output [6:0] seg,    // 7-segment display output
+    output [3:0] an      // 4-digit anode control output (for multiplexing)
 );
 
     // Internal wires for the key outputs
