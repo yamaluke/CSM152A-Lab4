@@ -44,27 +44,14 @@ module Keypad (
         .key_debounced(row_debounced[3])
     );
 
-    // State for scanning columns
-    always @(posedge clk1KHz or posedge reset) begin
-        if (reset)
-            col <= 4'b1110;  // Initial state, first column enabled
-        else begin
-            case (col)
-                4'b1110: col <= 4'b1101;  // Shift to column 1
-                4'b1101: col <= 4'b1011;  // Shift to column 2
-                4'b1011: col <= 4'b0111;  // Shift to column 3
-                4'b0111: col <= 4'b1110;  // Shift back to column 0
-                default: col <= 4'b1110;  // Default to column 0 if error occurs
-            endcase
-        end
-    end
-
     // Variables to track key presses
     reg [3:0] key_count;  // Counter for key presses
+    reg [3:0] col_next;   // Next column state for column multiplexing
 
-    // Detect key presses based on the row_debounced values and column states
+    // Detect key presses and column scanning logic
     always @(posedge clk1KHz or posedge reset) begin
         if (reset) begin
+            col <= 4'b1110;  // Initial state, first column enabled
             key1 <= 4'b0000;
             key2 <= 4'b0000;
             key3 <= 4'b0000;
@@ -72,6 +59,10 @@ module Keypad (
             key_count <= 4'b0000;  // Reset the key press count
             input_done <= 1'b0;    // Input is not done
         end else begin
+            // Column multiplexing (shift through columns)
+            col <= col_next;
+
+            // Detect key presses based on the debounced row signals and current column state
             case (col)
                 4'b1110: begin
                     if (row_debounced[0] && key_count < 4) key1 <= 4'b0001; // Key 1
@@ -104,25 +95,30 @@ module Keypad (
                     key4 <= 4'b0000;
                 end
             endcase
+
+            // Logic to count the key presses and limit to 4 key presses
+            if (key_count < 4) begin
+                if (row_debounced[0] || row_debounced[1] || row_debounced[2] || row_debounced[3]) begin
+                    key_count <= key_count + 1;
+                end
+            end
+
+            // Once 4 keys are pressed, set the input_done flag
+            if (key_count == 4) begin
+                input_done <= 1'b1;  // Indicate that input is complete
+            end
         end
     end
 
-    // Logic to count the key presses and limit to 4 key presses
-    always @(posedge clk1KHz or posedge reset) begin
-        if (reset) begin
-            key_count <= 4'b0000;  // Reset the key press counter
-            input_done <= 1'b0;    // Reset the input_done flag
-        end else if (key_count < 4) begin
-            // Increase the counter when a key is pressed
-            if (row_debounced[0] || row_debounced[1] || row_debounced[2] || row_debounced[3]) begin
-                key_count <= key_count + 1;
-            end
-        end
-
-        // Once 4 keys are pressed, set the input_done flag
-        if (key_count == 4) begin
-            input_done <= 1'b1;  // Indicate that input is complete
-        end
+    // Column Multiplexing Logic: Update next column based on the current column state
+    always @(*) begin
+        case (col)
+            4'b1110: col_next = 4'b1101;  // Shift to column 1
+            4'b1101: col_next = 4'b1011;  // Shift to column 2
+            4'b1011: col_next = 4'b0111;  // Shift to column 3
+            4'b0111: col_next = 4'b1110;  // Shift back to column 0
+            default: col_next = 4'b1110;  // Default to column 0 if error occurs
+        endcase
     end
 
 endmodule
