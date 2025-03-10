@@ -26,7 +26,7 @@ module unlocker(
 
     output reg lock,
     output reg flag,        //when flag goes up error = incorrect password 
-    output reg lockout,     //3 attempted times at wrong password. Will go back down when flag is resolved
+    output reg flagSelect,     //flagSelect = 0: wrong password attempt, flagSelect = 1: 3 incorrect attempts 
     output reg resetCount   //tell other module to reset inputCount to 0, also means input is not going to get read
 
     );
@@ -62,7 +62,7 @@ module unlocker(
     begin
         if(flag && flagResolve)
         begin
-            lockout <= 0;
+            flagSelect <= 0;
             flag <= 0;
         end
         if(~lock)
@@ -189,8 +189,12 @@ module unlocker(
                         flag <= 1;
                         if(loginAttempts == 3)
                         begin
-                            lockout <= 1;
+                            flagSelect <= 1;
                             loginAttempts <= 0;
+                        end
+                        else
+                        begin
+                            flagSelect <= 0;
                         end
                     end;
                 end
