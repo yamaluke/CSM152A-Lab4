@@ -22,12 +22,13 @@ module unlocker(
     input wire[3:0] passwordInput2,
     input wire[3:0] passwordInput3,
 
-    input wire flagResolve,
+    input wire flagResolve, //indicates that the flag has been delt with 
 
     output reg lock,
     output reg flag,        //when flag goes up error = incorrect password 
-    output reg lockout,     //3 attempted times at wrong password 
-    output reg resetCount   //tell other module to reset inputCount to 0, also means input is not going to get read 
+    output reg lockout,     //3 attempted times at wrong password. Will go back down when flag is resolved
+    output reg resetCount   //tell other module to reset inputCount to 0, also means input is not going to get read
+
     );
 
     reg [15:0] userList [7:0];    // Array of 8 elements, each 20 bits wide
@@ -120,7 +121,7 @@ module unlocker(
                             else
                             begin
                                 // alert too many usres
-                                flag <= 1;
+                                // flag <= 1;
                             end
                         end
                     end
