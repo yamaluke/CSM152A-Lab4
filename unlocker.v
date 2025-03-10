@@ -26,7 +26,8 @@ module unlocker(
 
     output reg lock,
     output reg flag,        //when flag goes up error = incorrect password 
-    output reg resetCount
+    output reg lockout,     //3 attempted times at wrong password 
+    output reg resetCount   //tell other module to reset inputCount to 0, also means input is not going to get read 
     );
 
     reg [15:0] userList [7:0];    // Array of 8 elements, each 20 bits wide
@@ -40,23 +41,28 @@ module unlocker(
     
     integer currentUser;
 
+    integer loginAttempts;
+
     integer i;
 
     initial 
     begin
-        userList[0] = 16'b0001000100000000;
-        userPassword[0] = 16'b0001000100000000;
-        userMode[0] = 2'b00;
-        currentUser = 0;
-        userCount = 1;
-        lock = 1;
+        userList[0] <= 16'b0001000100000000;
+        userPassword[0] <= 16'b0001000100000000;
+        userMode[0] <= 2'b00;
+        currentUser <= 0;
+        userCount <= 1;
+        lock <= 1;
+        loginAttempts <= 0;
+        lockout <= 0;
     end
 
     always @(posedge clk) 
     begin
         if(flag && flagResolve)
         begin
-            flag = 0;
+            lockout <= 0;
+            flag <= 0;
         end
         if(~lock)
         begin
@@ -65,25 +71,25 @@ module unlocker(
                 if(userMode[currentUser] == 2)
                 begin
                     // remove current user 
-                    userCount = userCount - 1;
-                    userList[currentUser][15:0] = userList[userCount][15:0];
-                    userPassword[currentUser][15:0] = userPassword[userCount][15:0];
-                    userMode[currentUser] = userMode[userCount];
+                    userCount <= userCount - 1;
+                    userList[currentUser][15:0] <= userList[userCount][15:0];
+                    userPassword[currentUser][15:0] <= userPassword[userCount][15:0];
+                    userMode[currentUser] <= userMode[userCount];
                 end
-                lock = 1;
-                resetCount = 0;
+                lock <= 1;
+                resetCount <= 0;
             end
             else if(userMode[currentUser][1:0] == 2'b00 || userMode[currentUser][1:0] == 2'b01)
             begin
                 if(btn2)
                 begin
                     // reset password
-                    resetCount = 0;
+                    resetCount <= 0;
                     if(inputCount == 4)
                     begin
-                        userPassword[currentUser][15:0] = {userNameInput3[3:0], userNameInput2[3:0], userNameInput1[3:0], userNameInput0[3:0]};
+                        userPassword[currentUser][15:0] <= {userNameInput3[3:0], userNameInput2[3:0], userNameInput1[3:0], userNameInput0[3:0]};
                         // $display("New password: %b", userPassword[currentUser][19:0]);
-                        resetCount = 1;
+                        resetCount <= 1;
                     end
                     
                     
@@ -93,45 +99,45 @@ module unlocker(
                     if(btn3)
                     begin
                         // add user 
-                        resetCount = 0;
+                        resetCount <= 0;
                         if(inputCount == 8)
                         begin
                             if(userCount < 8)
                             begin
-                                userList[userCount] = {userNameInput3[3:0], userNameInput2[3:0], userNameInput1[3:0], userNameInput0[3:0]};
-                                userPassword[userCount] = {passwordInput3[3:0], passwordInput2[3:0], passwordInput1[3:0], passwordInput0[3:0]};
+                                userList[userCount] <= {userNameInput3[3:0], userNameInput2[3:0], userNameInput1[3:0], userNameInput0[3:0]};
+                                userPassword[userCount] <= {passwordInput3[3:0], passwordInput2[3:0], passwordInput1[3:0], passwordInput0[3:0]};
                                 if(switch1)
                                 begin
-                                    userMode[userCount] = 1;
+                                    userMode[userCount] <= 1;
                                 end
                                 else
                                 begin
-                                    userMode[userCount] = 2;
+                                    userMode[userCount] <= 2;
                                 end
-                                resetCount = 1;
-                                userCount = userCount + 1;
+                                resetCount <= 1;
+                                userCount <= userCount + 1;
                             end
                             else
                             begin
                                 // alert too many usres
-                                flag = 1;
+                                flag <= 1;
                             end
                         end
                     end
                     else if(btn4)
                     begin
                         // change password
-                        resetCount = 0;
+                        resetCount <= 0;
                         if(inputCount == 8)
                         begin
-                            resetCount = 1;
+                            resetCount <= 1;
                             for(i=0; i<userCount; i=i+1)
                             begin
-                                tempUser = userList[i][15:0];
-                                tempPassword = userPassword[i][15:0];
+                                tempUser <= userList[i][15:0];
+                                tempPassword <= userPassword[i][15:0];
                                 if(tempUser[3:0] == userNameInput0 && tempUser[7:4] == userNameInput1 && tempUser[11:8] == userNameInput2 && tempUser[15:12] == userNameInput3)
                                 begin
-                                    userPassword[i] = {passwordInput3[3:0], passwordInput2[3:0], passwordInput1[3:0], passwordInput0[3:0]};
+                                    userPassword[i] <= {passwordInput3[3:0], passwordInput2[3:0], passwordInput1[3:0], passwordInput0[3:0]};
                                 end
                             end
                         end
@@ -140,20 +146,20 @@ module unlocker(
                     else if(btn5)
                     begin
                         // delete user 
-                        resetCount = 0;
+                        resetCount <= 0;
                         if(inputCount == 4)
                         begin
-                            resetCount = 1;
+                            resetCount <= 1;
                             for(i=0; i<userCount; i=i+1)
                             begin
-                                tempUser = userList[i][15:0];
-                                tempPassword = userPassword[i][15:0];
+                                tempUser <= userList[i][15:0];
+                                tempPassword <= userPassword[i][15:0];
                                 if(tempUser[3:0] == userNameInput0 && tempUser[7:4] == userNameInput1 && tempUser[11:8] == userNameInput2 && tempUser[15:12] == userNameInput3)
                                 begin
-                                    userCount = userCount - 1;
-                                    userList[i][15:0] = userList[userCount][15:0];
-                                    userPassword[i][15:0] = userPassword[userCount][15:0];
-                                    userMode[i] = userMode[userCount];
+                                    userCount <= userCount - 1;
+                                    userList[i][15:0] <= userList[userCount][15:0];
+                                    userPassword[i][15:0] <= userPassword[userCount][15:0];
+                                    userMode[i] <= userMode[userCount];
                                 end
                             end
                         end
@@ -165,19 +171,26 @@ module unlocker(
         begin
             for(i=0; i<userCount; i=i+1)
             begin
-                tempUser = userList[i][19:0];
-                tempPassword = userPassword[i][19:0];
+                tempUser <= userList[i][19:0];
+                tempPassword <= userPassword[i][19:0];
                 if(tempUser[3:0] == userNameInput0 && tempUser[7:4] == userNameInput1 && tempUser[11:8] == userNameInput2 && tempUser[15:12] == userNameInput3)
                 begin
                     if(tempPassword[3:0] == passwordInput0 && tempPassword[7:4] == passwordInput1 && tempPassword[11:8] == passwordInput2 && tempPassword[15:12] == passwordInput3)
                     begin
-                        currentUser = i;
-                        lock = 0;
-                        resetCount = 1;
+                        currentUser <= i;
+                        lock <= 0;
+                        resetCount <= 1;
+                        loginAttempts <= 0;
                     end
                     else
                     begin
-                        flag = 1;
+                        loginAttempts <= loginAttempts + 1;
+                        flag <= 1;
+                        if(loginAttempts == 3)
+                        begin
+                            lockout <= 1;
+                            loginAttempts <= 0;
+                        end
                     end;
                 end
             end

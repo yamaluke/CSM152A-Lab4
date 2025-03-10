@@ -26,6 +26,7 @@ module unlocker_tb;
 
     wire lock;
     wire flag;
+    wire lockout;
     wire resetCount;
 
     reg[3:0] checkCount;
@@ -51,6 +52,7 @@ module unlocker_tb;
         .flagResolve(flagResolve),
         .lock(lock),
         .flag(flag),
+        .lockout(lockout),
         .resetCount(resetCount)
         );
 
@@ -609,6 +611,65 @@ module unlocker_tb;
         inputCount = 8;
         #5;
 
+        checkCount = 6;
+        //== check auto lock ==//
+        // 1 attempt in last try
+
+        // 2nd attempt 
+        userNameInput0 = 1;
+        inputCount = 1;
+        switch1 = 0;
+        #1;
+        userNameInput1 = 5;
+        inputCount = 2;
+        #1;
+        userNameInput2 = 3;
+        inputCount = 3;
+        #1;
+        userNameInput3 = 4;
+        inputCount = 4;
+        
+        #1;
+        passwordInput0 = 2;
+        inputCount = 5;
+        #1;
+        passwordInput1 = 7;
+        inputCount = 6;
+        #1;
+        passwordInput2 = 1;
+        inputCount = 7;
+        #1;
+        passwordInput3 = 1;
+        inputCount = 8;
+        #5;
+
+        // 3rd attempt 
+        userNameInput0 = 1;
+        inputCount = 1;
+        switch1 = 0;
+        #1;
+        userNameInput1 = 5;
+        inputCount = 2;
+        #1;
+        userNameInput2 = 3;
+        inputCount = 3;
+        #1;
+        userNameInput3 = 4;
+        inputCount = 4;
+        
+        #1;
+        passwordInput0 = 2;
+        inputCount = 5;
+        #1;
+        passwordInput1 = 7;
+        inputCount = 6;
+        #1;
+        passwordInput2 = 1;
+        inputCount = 7;
+        #1;
+        passwordInput3 = 1;
+        inputCount = 8;
+        #5;
 
         #20 $finish;
     end
