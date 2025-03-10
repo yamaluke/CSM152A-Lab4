@@ -15,9 +15,9 @@ module display(
     // Multiplexing 7-segment decoder
     always @(posedge clk1KHz) begin
         // Check if all digits are zero (no input case)
-        if (digit1 == 4'b0000 && digit2 == 4'b0000 && digit3 == 4'b0000 && digit4 == 4'b0000) begin
-            seg = 7'b1111111;  // Display nothing (blank) if no input
-        end else begin
+        // if (digit1 == 4'b0000 && digit2 == 4'b0000 && digit3 == 4'b0000 && digit4 == 4'b0000) begin
+        //     seg = 7'b1111111;  // Display nothing (blank) if no input
+        // end else begin
             case (digit_select)
                 2'b00: begin
                     // Display minutes tens digit (m10)
@@ -108,7 +108,7 @@ module display(
                     endcase
                 end
             endcase
-        end
+        // end
         
         // Cycle through the digits (m10, m1, s10, s1) with multiplexing
         digit_select <= digit_select + 1;
