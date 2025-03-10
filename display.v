@@ -1,4 +1,4 @@
-timescale 10ns / 1ns
+`timescale 10ns / 1ns
 
 module display(
     input wire clk1KHz,
@@ -15,7 +15,7 @@ module display(
     // Multiplexing 7-segment decoder
     always @(posedge clk1KHz) begin
         // Check if all digits are zero (no input case)
-        if (digit1 == 5'b00000 && digit2 == 5'b00000 && digit3 == 5'b00000 && digit4 == 5'b00000) begin
+        if (digit1 == 4'b0000 && digit2 == 4'b0000 && digit3 == 4'b0000 && digit4 == 4'b0000) begin
             seg = 7'b1111111;  // Display nothing (blank) if no input
         end else begin
             case (digit_select)
