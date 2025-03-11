@@ -26,7 +26,7 @@ module unlocker_tb;
 
     wire lock;
     wire flag;
-    wire lockout;
+    wire flagSelect;
     wire resetCount;
 
     reg[3:0] checkCount;
@@ -52,7 +52,7 @@ module unlocker_tb;
         .flagResolve(flagResolve),
         .lock(lock),
         .flag(flag),
-        .lockout(lockout),
+        .flagSelect(flagSelect),
         .resetCount(resetCount)
         );
 
