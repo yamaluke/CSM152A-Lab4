@@ -12,6 +12,11 @@ module display(
 
     reg [1:0] digit_select;   // For digit multiplexing (0: m10, 1: m1, 2: s10, 3: s1)
 
+    initial
+    begin
+        digit_select <= 0;
+    end
+
     // Multiplexing 7-segment decoder
     always @(posedge clk1KHz) begin
         // Check if all digits are zero (no input case)
