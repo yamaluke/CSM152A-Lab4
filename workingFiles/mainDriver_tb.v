@@ -1,6 +1,5 @@
-module displayHandle_tb;
+module mainDriver_tb;
     reg clk;
-    wire locker;
 
     reg btn1;
     reg btn2;
@@ -22,11 +21,7 @@ module displayHandle_tb;
     reg[3:0] passwordInput2;
     reg[3:0] passwordInput3;
 
-    wire flagResolve;
-
-    wire lock;
-    wire flag;
-    wire flagSelect;
+    
     wire resetCount;
 
     wire [3:0] seg;     // 7-segment display output
