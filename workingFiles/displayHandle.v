@@ -63,16 +63,17 @@ module displayHandle(
        else if(flag && flagSelect && ~flagResolve)
        begin
             // 3 failed attempts 
-            smallDisplay10 <= 0;
-            smallDisplay1 <= 0;
-
             if(~countDownActive)
             begin
                 countDownActive <= 1;
+                smallDisplay10 <= 0;
+                smallDisplay1 <= 0;
                 $display("Count down activated");
             end
             else if(s10 == 0 && s1 == 0)
             begin   
+                smallDisplay10 <= 1;
+                smallDisplay1 <= 1;
                 flagResolve <= 1;
                 countDownActive <= 0;
             end
