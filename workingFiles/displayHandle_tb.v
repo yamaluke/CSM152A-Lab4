@@ -32,6 +32,9 @@ module displayHandle_tb;
     wire [3:0] seg;     // 7-segment display output
     wire [3:0] an;       // 4-digit select output (anode control)
 
+    wire seg2;
+    wire an2;
+
     reg[3:0] checkCount;
 
     unlocker my_unlock(
@@ -69,7 +72,9 @@ module displayHandle_tb;
         .flagResolve(flagResolve),
         .locker(locker),
         .seg(seg),     // 7-segment display output
-        .an(an)        // 4-digit select output
+        .an(an),        // 4-digit select output
+        .seg2(seg2),
+        .an2(an2)
     );
 
     initial begin

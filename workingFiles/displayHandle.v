@@ -9,7 +9,10 @@ module displayHandle(
     output reg locker,
 
     output wire [3:0] seg,     // 7-segment display output
-    output wire [3:0] an       // 4-digit select output (anode control)
+    output wire [3:0] an,       // 4-digit select output (anode control)
+
+    output wire seg2,
+    output wire an2
     );
 
     reg prevLockState;
@@ -30,6 +33,16 @@ module displayHandle(
         .seg(seg),     // 7-segment display output
         .an(an)       // 4-digit select output (anode control)
     );
+
+    /*
+    display2 my_display2(
+        .clk1KHz(clk1KHz),
+        .digit1(smallDisplay10),  // Digit 1 input (1 bit)
+        .digit2(smallDisplay1),  // Digit 2 input (1 bit)
+        .seg(seg2),     // 7-segment display output
+        .an(an2)       // 4-digit select output (anode control)
+    );
+    */
 
     countDown my_CountDown(
         .clk(clk), // 1hz
