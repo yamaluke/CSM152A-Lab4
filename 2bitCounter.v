@@ -1,15 +1,24 @@
 `timescale 10ns / 1ns
 
-module counter(
+module twoBitCounter(
     input wire clk,          // Clock input
-    output reg [1:0] count  // 2-bit counter output
+    output reg d1,              // first digit
+    output reg d2               // second digit
 );
+
+    initial begin
+        d1 = 0; // Initial value for d1
+        d2 = 0; // Initial value for d2
+    end
 
     // On each clock cycle, increment the counter
     always @(posedge clk) begin
-        count <= count + 1;
-        if (count == 2'b11) begin
-            count <= 2'b00;  // Reset the counter to 00 after 11
+        // Increment d2
+        if (d2 == 1) begin
+            d2 <= 0;        // Reset d2 to 0
+            d1 <= d1 + 1;   // Increment d1
+        end else begin
+            d2 <= d2 + 1;   // Increment d2
         end
     end
 

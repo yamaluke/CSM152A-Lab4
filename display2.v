@@ -1,7 +1,7 @@
 `timescale 10ns / 1ns
 
 module display2(
-    input wire clk1KHz,
+    input wire clk,
     input wire digit1,      // Digit 1 input
     input wire digit2,      // Digit 2 input
     output reg [3:0] seg,   // 7-segment display output
@@ -10,7 +10,7 @@ module display2(
 
     reg digit_select;           // low for Digit 1, High for Digit 2
 
-    always @(posedge clk1KHz) begin
+    always @(posedge clk) begin
         case (digit_select)
             1'b0: begin
                 // Display minutes tens digit (m10)

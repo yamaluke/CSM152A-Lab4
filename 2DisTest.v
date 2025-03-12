@@ -1,13 +1,35 @@
 `timescale 10ns / 1ns
-module top_module(
+
+module test(
     input wire clk,         // Main clock input
-    output wire [1:0] count // Counter output
+    output wire [6:0] seg2,
+    output wire an2
 );
 
+    wire clk1KHz;
+    wire clk1Hz;
+    wire d1;
+    wire d2;
+
+    clock_divider mCD (
+        .clk(clk),
+        .clk(clk1Hz),
+        .clk1KHz(clk1KHz)
+    )
+
     // Instantiate the 2-bit counter
-    counter my_counter (
-        .clk(clk),        // Connect the clock input
-        .count(count)     // Connect the counter output
+    twoBitCounter my2BC (
+        .clk(clk1Hz),        // Connect the clock input
+        .d1(d1),
+        .d2(d2)
     );
+
+    display2 my2D (
+        .clk(clk1KHz),
+        .digit1(d1),
+        .digit2(d2),
+        .seg(seg2),
+        .an(an2)
+    )
 
 endmodule
