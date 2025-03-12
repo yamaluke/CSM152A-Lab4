@@ -48,9 +48,12 @@ module unlocker(
 
     initial 
     begin
-        userList[0] <= 16'b0001000100000000;
-        userPassword[0] <= 16'b0001000100000000;
-        userMode[0] <= 2'b00;
+        for(i=0; i<8; i=i+1)
+        begin
+            userList[i] <= 16'b0000000000000000;
+            userPassword[i] <= 16'b0000000000000000;
+            userMode[i] <= 2'b00;
+        end
         currentUser <= 0;
         userCount <= 1;
         lock <= 1;
@@ -97,7 +100,7 @@ module unlocker(
                     if(inputCount >= 4)
                     begin
                         userPassword[currentUser][15:0] <= {userNameInput3[3:0], userNameInput2[3:0], userNameInput1[3:0], userNameInput0[3:0]};
-                        // $display("New password: %b", userPassword[currentUser][19:0]);
+                        // $display("New password: %b", userPassword[currentUser][15:0]);
                         resetCount <= 1;
                     end
                     
@@ -184,8 +187,8 @@ module unlocker(
         begin
             for(i=0; i<8; i=i+1)
             begin
-                tempUser = userList[i][19:0];
-                tempPassword = userPassword[i][19:0];
+                tempUser = userList[i][15:0];
+                tempPassword = userPassword[i][15:0];
                 if(tempUser[3:0] == userNameInput0 && tempUser[7:4] == userNameInput1 && tempUser[11:8] == userNameInput2 && tempUser[15:12] == userNameInput3)
                 begin
                     if(tempPassword[3:0] == passwordInput0 && tempPassword[7:4] == passwordInput1 && tempPassword[11:8] == passwordInput2 && tempPassword[15:12] == passwordInput3)
