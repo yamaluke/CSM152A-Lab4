@@ -1,0 +1,6 @@
+- the input into unlocker will be like a switch, when the number of inputs are counted, then the btn automaticlaly goes down
+- when it doesn't take in an input, check the changing condition ie lock in the source file and adjust there
+- when resetCount = 1, inputCount = 0
+
+- issue with password reset
+- had an error with combining arrays: used &, and that was causing errors, instead {, ,} to combine arrays
