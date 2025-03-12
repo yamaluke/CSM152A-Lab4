@@ -76,6 +76,7 @@ module unlocker(
             begin
                 flagSelect <= 0;
                 flag <= 0;
+                resetCount <= 0;
             end
         end
         else if(~lock)
@@ -208,6 +209,7 @@ module unlocker(
                     else
                     begin
                         $display("Failed attempt");
+                        resetCount <= 1;
                         flag <= 1;
                         if(loginAttempts == 2)
                         begin
