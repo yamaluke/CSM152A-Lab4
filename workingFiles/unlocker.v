@@ -48,18 +48,24 @@ module unlocker(
 
     initial 
     begin
-        for(i=0; i<8; i=i+1)
+        for(i=1; i<8; i=i+1)
         begin
             userList[i] <= 16'b0000000000000000;
             userPassword[i] <= 16'b0000000000000000;
             userMode[i] <= 2'b00;
         end
+        // Add default admin user with username 1111 and password 1111
+        userList[0] <= 16'b0001000100010001;      // 1111 in binary (4 bits per digit)
+        userPassword[0] <= 16'b0001000100010001;   // 1111 in binary (4 bits per digit)
+        userMode[0] <= 2'b00;                      // Admin mode
+        
         currentUser <= 0;
         userCount <= 1;
         lock <= 1;
         loginAttempts <= 0;
         flag <= 0;
         flagSelect <= 0;
+        resetCount <= 0;
     end
 
     always @(posedge clk) 
@@ -213,7 +219,7 @@ module unlocker(
                             loginAttempts <= loginAttempts + 1;
                             flagSelect <= 0;
                         end
-                    end;
+                    end
                 end
             end
         end

@@ -4,7 +4,7 @@ module display2(
     input wire clk1KHz,
     input wire digit1,      // Digit 1 input
     input wire digit2,      // Digit 2 input
-    output reg [3:0] seg,   // 7-segment display output
+    output reg [6:0] seg,   // 7-segment display output
     output reg an           // 2-digit select output (anode control)
 );
 

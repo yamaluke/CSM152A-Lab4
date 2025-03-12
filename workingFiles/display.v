@@ -6,7 +6,7 @@ module display(
     input wire [3:0] digit2,  // Digit 2 input
     input wire [3:0] digit3,  // Digit 3 input
     input wire [3:0] digit4,  // Digit 4 input 
-    output reg [3:0] seg,     // 7-segment display output
+    output reg [6:0] seg,     // 7-segment display output
     output reg [3:0] an       // 4-digit select output (anode control)
 );
 

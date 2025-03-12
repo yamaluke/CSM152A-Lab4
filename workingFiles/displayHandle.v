@@ -8,10 +8,10 @@ module displayHandle(
     output reg flagResolve,
     output reg locker,
 
-    output wire [3:0] seg,     // 7-segment display output
+    output wire [6:0] seg,     // 7-segment display output
     output wire [3:0] an,       // 4-digit select output (anode control)
 
-    output wire [3:0]seg2,
+    output wire [6:0]seg2,
     output wire an2
     );
 

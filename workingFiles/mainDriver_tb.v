@@ -11,10 +11,10 @@ module mainDriver_tb;
     reg [3:0] row;
     wire [3:0] col;
 
-    wire [3:0] seg;     // 7-segment display output
+    wire [6:0] seg;     // 7-segment display output
     wire [3:0] an;       // 4-digit select output (anode control)
 
-    wire [3:0] seg2;
+    wire [6:0] seg2;
     wire an2;
 
     reg [3:0] checkCount;
