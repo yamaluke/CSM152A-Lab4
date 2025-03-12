@@ -1,11 +1,11 @@
 module mainDriver(
     input wire clk, // 100 mhz
-    input wire btn1,    // unlock button
+    input wire btn1,    // lock button
     input wire switch1, // ==0 : guest account // ==1 : user account 
-    input wire switch2,    // reset switch
-    input wire switch3,    
-    input wire switch4,
-    input wire switch5,
+    input wire switch2,    // reset password
+    input wire switch3,    // add new user
+    input wire switch4,    // change password for other users
+    input wire switch5,    // delete user
     
 
     //take in input needed for the keypad 
