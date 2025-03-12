@@ -90,7 +90,7 @@ module unlocker(
                 begin
                     // reset password
                     resetCount <= 0;
-                    if(inputCount == 4)
+                    if(inputCount >= 4)
                     begin
                         userPassword[currentUser][15:0] <= {userNameInput3[3:0], userNameInput2[3:0], userNameInput1[3:0], userNameInput0[3:0]};
                         // $display("New password: %b", userPassword[currentUser][19:0]);
