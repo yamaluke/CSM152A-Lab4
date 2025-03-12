@@ -80,6 +80,10 @@ module unlocker(
                     userList[currentUser][15:0] <= userList[userCount][15:0];
                     userPassword[currentUser][15:0] <= userPassword[userCount][15:0];
                     userMode[currentUser] <= userMode[userCount];
+
+                    userList[userCount][15:0] <= 16'b0000000000000000;
+                    userPassword[userCount][15:0] <= 16'b0000000000000000;
+                    userMode[userCount] <= 2'b00;
                 end
                 lock <= 1;
                 resetCount <= 0;
@@ -136,10 +140,10 @@ module unlocker(
                         if(inputCount == 8)
                         begin
                             resetCount <= 1;
-                            for(i=0; i<userCount; i=i+1)
+                            for(i=0; i<8; i=i+1)
                             begin
-                                tempUser <= userList[i][15:0];
-                                tempPassword <= userPassword[i][15:0];
+                                tempUser = userList[i][15:0];
+                                tempPassword = userPassword[i][15:0];
                                 if(tempUser[3:0] == userNameInput0 && tempUser[7:4] == userNameInput1 && tempUser[11:8] == userNameInput2 && tempUser[15:12] == userNameInput3)
                                 begin
                                     userPassword[i] <= {passwordInput3[3:0], passwordInput2[3:0], passwordInput1[3:0], passwordInput0[3:0]};
@@ -155,7 +159,7 @@ module unlocker(
                         if(inputCount == 4)
                         begin
                             resetCount <= 1;
-                            for(i=0; i<userCount; i=i+1)
+                            for(i=0; i<8; i=i+1)
                             begin
                                 tempUser <= userList[i][15:0];
                                 tempPassword <= userPassword[i][15:0];
@@ -165,6 +169,10 @@ module unlocker(
                                     userList[i][15:0] <= userList[userCount][15:0];
                                     userPassword[i][15:0] <= userPassword[userCount][15:0];
                                     userMode[i] <= userMode[userCount];
+
+                                    userList[userCount][15:0] <= 16'b0000000000000000;
+                                    userPassword[userCount][15:0] <= 16'b0000000000000000;
+                                    userMode[userCount] <= 2'b00;
                                 end
                             end
                         end
@@ -174,10 +182,10 @@ module unlocker(
         end
         else if(inputCount == 8)
         begin
-            for(i=0; i<userCount; i=i+1)
+            for(i=0; i<8; i=i+1)
             begin
-                tempUser <= userList[i][19:0];
-                tempPassword <= userPassword[i][19:0];
+                tempUser = userList[i][19:0];
+                tempPassword = userPassword[i][19:0];
                 if(tempUser[3:0] == userNameInput0 && tempUser[7:4] == userNameInput1 && tempUser[11:8] == userNameInput2 && tempUser[15:12] == userNameInput3)
                 begin
                     if(tempPassword[3:0] == passwordInput0 && tempPassword[7:4] == passwordInput1 && tempPassword[11:8] == passwordInput2 && tempPassword[15:12] == passwordInput3)
