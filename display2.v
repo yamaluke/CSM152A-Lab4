@@ -22,7 +22,7 @@ module display2(
             end
             1'b1: begin
                 // Display minutes ones digit (m1)
-                an = 4'b1011;  // Only second digit active
+                an = 1'b1;  // Only second digit active
                 case (digit2)
                     1'b0: seg = 7'b1000000;
                     1'b1: seg = 7'b1111001;
@@ -31,6 +31,7 @@ module display2(
         endcase
         // Cycle through the digits (m10, m1, s10, s1) with multiplexing
         digit_select <= digit_select + 1;
+        if (digit_select > 1'b1) digit_select <= 1'b0;
     end
-    
+
 endmodule

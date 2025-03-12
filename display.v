@@ -112,5 +112,6 @@ module display(
         
         // Cycle through the digits (m10, m1, s10, s1) with multiplexing
         digit_select <= digit_select + 1;
+        if (digit_select > 2'b11) digit_select <= 2'b00;
     end
 endmodule
