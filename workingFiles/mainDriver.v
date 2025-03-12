@@ -3,12 +3,14 @@ module mainDriver(
     input wire btn1,    // unlock button
     input wire switch1, // ==0 : guest account // ==1 : user account 
     input wire switch2,    // reset switch
-    input wire switch3,    /
+    input wire switch3,    
     input wire switch4,
     input wire switch5,
     
 
     //take in input needed for the keypad 
+    input wire [3:0] row,
+    output wire [3:0] col,
 
     output wire [3:0] seg,     // 7-segment display output
     output wire [3:0] an,       // 4-digit select output (anode control)
@@ -88,15 +90,21 @@ module mainDriver(
         .an2(an2)
     );
 
-    /* inside the keypad module 
-    // module should also set values to the input username and password variables 
-    // output should be userNameInputs 0-4 and passwordInputs 0-4, with input count ie number of inputs it has taken
-    // input should include a a resetCount bit, when 1 set inputcount to 0, when 0 do nothing 
-    if(resetCount)
-    begin
-        inputCount <= 0;
-    end
-    */
-
+    
+    decoder my_decoder(
+        .clk1KHz(clk1KHz),
+        .row(row),
+        .resetCount(resetCount),
+        .col(col),
+        .userNameInput0(userNameInput0),
+        .userNameInput1(userNameInput1),
+        .userNameInput2(userNameInput2),
+        .userNameInput3(userNameInput3),
+        .passwordInput0(passwordInput0),
+        .passwordInput1(passwordInput1),
+        .passwordInput2(passwordInput2),
+        .passwordInput3(passwordInput3),
+        .inputCount(inputCount)
+    );
 
 endmodule
