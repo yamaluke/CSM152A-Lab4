@@ -1,18 +1,19 @@
 module mainDriver(
     input wire clk, // 100 mhz
-    input wire btn1,
-    input wire btn2,
-    input wire btn3,
-    input wire btn4,
-    input wire btn5,
+    input wire btn1,    // unlock button
     input wire switch1, // ==0 : guest account // ==1 : user account 
+    input wire switch2,    // reset switch
+    input wire switch3,    /
+    input wire switch4,
+    input wire switch5,
+    
 
     //take in input needed for the keypad 
 
     output wire [3:0] seg,     // 7-segment display output
     output wire [3:0] an,       // 4-digit select output (anode control)
 
-    output wire seg2,
+    output wire [3:0] seg2,
     output wire an2
     );
 
@@ -51,10 +52,10 @@ module mainDriver(
         .clk(clk1Hz),
         .locker(locker), 
         .btn1(btn1),
-        .btn2(btn2),
-        .btn3(btn3),
-        .btn4(btn4),
-        .btn5(btn5),
+        .btn2(switch2),
+        .btn3(switch3),
+        .btn4(switch4),
+        .btn5(switch5),
         .switch1(switch1),
         .inputCount(inputCount), 
         .userNameInput0(userNameInput0), 

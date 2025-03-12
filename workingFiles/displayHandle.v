@@ -11,7 +11,7 @@ module displayHandle(
     output wire [3:0] seg,     // 7-segment display output
     output wire [3:0] an,       // 4-digit select output (anode control)
 
-    output wire seg2,
+    output wire [3:0]seg2,
     output wire an2
     );
 
@@ -34,7 +34,7 @@ module displayHandle(
         .an(an)       // 4-digit select output (anode control)
     );
 
-    /*
+    
     display2 my_display2(
         .clk1KHz(clk1KHz),
         .digit1(smallDisplay10),  // Digit 1 input (1 bit)
@@ -42,7 +42,7 @@ module displayHandle(
         .seg(seg2),     // 7-segment display output
         .an(an2)       // 4-digit select output (anode control)
     );
-    */
+    
 
     countDown my_CountDown(
         .clk(clk), // 1hz

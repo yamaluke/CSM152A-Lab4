@@ -27,7 +27,7 @@ module mainDriver_tb;
     wire [3:0] seg;     // 7-segment display output
     wire [3:0] an;       // 4-digit select output (anode control)
 
-    wire seg2;
+    wire [3:0] seg2;
     wire an2;
 
     reg[3:0] checkCount;
@@ -74,7 +74,7 @@ module mainDriver_tb;
 
     initial begin
         $dumpfile("wave.vcd");
-        $dumpvars(0, displayHandle_tb);
+        $dumpvars(0, mainDriver_tb);
         $display("Waveform created");
 
         clk = 0;
