@@ -74,10 +74,10 @@ module unlocker(
         userList[7] <= 16'b0000000000000000;
         userPassword[7] <= 16'b0000000000000000;
         userMode[7] <= 2'b00;
-        // Add default admin user with username 1111 and password 1111
+        // Add default admin user with username 1234 and password 1234
         
-        userList[0] <= 16'b0001000100010001;      // 1111 in binary (4 bits per digit)
-        userPassword[0] <= 16'b0001000100010001;   // 1111 in binary (4 bits per digit)
+        userList[0] <= 16'b0001001000110100;      // 1234 in binary (4 bits per digit)
+        userPassword[0] <= 16'b0001001000110100;   // 1234 in binary (4 bits per digit)
         userMode[0] <= 2'b00;                      // Admin mode
         
         currentUser <= 0;
