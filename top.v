@@ -12,61 +12,30 @@ module Top(
     // // Internal wires for the key outputs
     // wire [3:0] key1, key2, key3, key4;
     wire clk1KHz;
+    wire [3:0] dec_out;
+    wire [7:0] input_count;
 
     // Instantiate the Clock Divider module
     clock_divider myCD (
         .clk(clk),              // Main clock input (e.g., 50 MHz)
-        .rst(btnR),            // Reset signal
         .clk1KHz(clk1KHz)      // 1 kHz clock output
     );
 
     // Internal registers to store decoded values
-    reg [3:0] dec1, dec2, dec3, dec4;
+    wire [3:0] dec1, dec2, dec3, dec4;
     
-    // Instantiate 4 decoder modules for each keypress
-    decoder dec_inst1 (
+    decoder2 my_d2 (
         .clk_100MHz(clk),
         .row(row),
         .col(col),
-        .dec_out(dec1)  // Store the output from the first decoder
-    );
-
-    decoder dec_inst2 (
-        .clk_100MHz(clk),
-        .row(row),
-        .col(col),
-        .dec_out(dec2)  // Store the output from the second decoder
-    );
-
-    decoder dec_inst3 (
-        .clk_100MHz(clk),
-        .row(row),
-        .col(col),
-        .dec_out(dec3)  // Store the output from the third decoder
-    );
-
-    decoder dec_inst4 (
-        .clk_100MHz(clk),
-        .row(row),
-        .col(col),
-        .dec_out(dec4)  // Store the output from the fourth decoder
-    );
-
-    // Instantiate the Display module
-    display myDisplay (
-        .clk1KHz(clk1KHz),      // Clock input for 7-segment multiplexing (1 kHz)
-        .digit1(key1),          // First digit input
-        .digit2(key2),          // Second digit input
-        .digit3(key3),          // Third digit input
-        .digit4(key4),          // Fourth digit input
-        .seg(seg),              // 7-segment display output
-        .an(an)                 // 4-digit anode control output
-    );
+        .dec_out(dec_out),
+        .press_count(input_count)
+    )
 
     // Instantiate the display module and connect the decoded values
-    display disp_inst (
+    display my_disTest (
         .clk1KHz(clk1KHz),  // Multiplexing clock
-        .digit1(dec1),        // First decoded value
+        .digit1(input_count),        // First decoded value
         .digit2(dec2),        // Second decoded value
         .digit3(dec3),        // Third decoded value
         .digit4(dec4),        // Fourth decoded value
