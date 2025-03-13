@@ -2,8 +2,7 @@
 
 module clock_divider(
     input wire clk, // 100 MHz
-    input wire rst,
-    output reg clk1Hz
+    output reg clk1Hz,
     output reg clk2Hz,
     output reg clk5Hz,
     output reg clk1KHz
@@ -16,18 +15,6 @@ module clock_divider(
     
     always@(posedge clk)
     begin
-        if (rst)
-        begin
-            count1Hz <= 0;
-            count2Hz <= 0;
-            count5HZ <= 0;
-            count1KHz <= 0;
-            clk1Hz <= 0;
-            clk2Hz <= 0;
-            clk5Hz <= 0;
-            clk1KHz <= 0;
-        end
-        
         if (count1KHz == 50000)
         begin
             clk1KHz <= ~clk1KHz;
