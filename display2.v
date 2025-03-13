@@ -16,16 +16,20 @@ module display2(
                 // Display minutes tens digit (m10)
                 an = 1'b0;  // Only first digit active
                 case (digit1)
-                    1'b0: seg = 7'b1000000; // 0
-                    1'b1: seg = 7'b1111001; // 1
+                    // 1'b0: seg = 7'b1000000; // 0
+                    // 1'b1: seg = 7'b1111001; // 1
+                    1'b0: seg = 7'b0111111; // 0
+                    1'b1: seg = 7'b0000110; // 1
                 endcase
             end
             1'b1: begin
                 // Display minutes ones digit (m1)
                 an = 1'b1;  // Only second digit active
                 case (digit2)
-                    1'b0: seg = 7'b1000000;
-                    1'b1: seg = 7'b1111001;
+                    // 1'b0: seg = 7'b1000000; // 0
+                    // 1'b1: seg = 7'b1111001; // 1
+                    1'b0: seg = 7'b0111111; // 0
+                    1'b1: seg = 7'b0000110; // 1
                 endcase
             end
         endcase
