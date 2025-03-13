@@ -9,7 +9,7 @@ module unlocker(
     input wire btn5,
     input wire switch1, // ==0 : guest account // ==1 : user account 
 
-    input wire [3:0] inputCount,
+    input wire [7:0] inputCount,
     
 
     input wire [3:0] userNameInput0,

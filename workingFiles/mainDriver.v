@@ -39,7 +39,7 @@ module mainDriver(
     wire[3:0] passwordInput2;
     wire[3:0] passwordInput3;
 
-    wire [3:0] inputCount;
+    wire [7:0] inputCount;
     wire resetCount;
 
     clock_divider my_clock_divider(
@@ -91,8 +91,8 @@ module mainDriver(
     );
 
     
-    decoder my_decoder(
-        .clk1KHz(clk1KHz),
+    decoderDriver my_decoderDriver(
+        .clk_100MHz(clk),
         .row(row),
         .resetCount(resetCount),
         .col(col),
