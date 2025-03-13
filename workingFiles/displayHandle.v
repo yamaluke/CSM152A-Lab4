@@ -17,6 +17,8 @@ module displayHandle(
 
     reg prevLockState;
 
+    reg reset;
+
     reg countDownActive;
     wire [3:0] s10;
     wire [3:0] s1;
@@ -47,7 +49,8 @@ module displayHandle(
     countDown my_CountDown(
         .clk(clk), // 1hz
         .countDownActive(countDownActive),
-
+        .reset(reset),
+        
         .s10(s10),
         .s1(s1)
     );
@@ -60,6 +63,7 @@ module displayHandle(
         smallDisplay10 <= 1;
         smallDisplay1 <= 1;
         prevLockState <= 1;
+        reset <= 0;
     end
 
     always @(posedge clk) 
@@ -79,6 +83,7 @@ module displayHandle(
             if(~countDownActive)
             begin
                 countDownActive <= 1;
+                reset <= 0;
                 smallDisplay10 <= 0;
                 smallDisplay1 <= 0;
                 $display("Count down activated");
@@ -111,10 +116,14 @@ module displayHandle(
                 countDownActive <= 0;
             end
        end
-       else if(~prevLockState && lock)
+       else if(lock)
        begin
-            smallDisplay10 <= 1;
-            smallDisplay1 <= 1;
+            reset <= 1;
+            if(~prevLockState)
+            begin
+                smallDisplay10 <= 1;
+                smallDisplay1 <= 1;
+            end
        end
        else
         begin

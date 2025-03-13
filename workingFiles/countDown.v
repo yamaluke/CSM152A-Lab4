@@ -1,6 +1,7 @@
 module countDown(
     input wire clk, // 1hz
     input wire countDownActive,
+    input wire reset,
 
     output reg [3:0] s10,
     output reg [3:0] s1
@@ -11,34 +12,42 @@ module countDown(
     initial 
     begin
         activeSet <= 2'b00;
-        s10 <= 7;
-        s1 <= 9;
+        s10 <= 0;
+        s1 <= 0;
     end
 
     always @(posedge clk) 
     begin
-        activeSet <= {activeSet[0], countDownActive};
-        if(activeSet == 2'b01)
-        begin
-            s10 <= 6;
+        if (reset) begin
+            // Reset to initial values
+            activeSet <= 2'b00;
+            s10 <= 0;
             s1 <= 0;
         end
-        else if(countDownActive && ((s1 != 0) || (s10 != 0)))
-        begin
-            if (s1 === 0)
+        else begin
+            activeSet <= {activeSet[0], countDownActive};
+            if(activeSet == 2'b01)
             begin
-                s10 <= s10 - 1;
-                s1 <= 9;
+                s10 <= 6;
+                s1 <= 0;
             end
-            else
+            else if(countDownActive && ((s1 != 0) || (s10 != 0)))
             begin
-                s1 <= s1 - 1;
+                if (s1 === 0)
+                begin
+                    s10 <= s10 - 1;
+                    s1 <= 9;
+                end
+                else
+                begin
+                    s1 <= s1 - 1;
+                end
             end
-        end
-        else if(~countDownActive)
-        begin
-            s10 <= 7;
-            s1 <= 9;    
+            else if(~countDownActive)
+            begin
+                s10 <= 7;
+                s1 <= 9;    
+            end
         end
     end
 
